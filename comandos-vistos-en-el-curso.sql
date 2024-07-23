@@ -1,4 +1,4 @@
-#Los comandos vistos en el aula anterior son los siguientes:
+# Los comandos vistos en el aula anterior Parte[1] son los siguientes:
 
 USE world;
 
@@ -15,3 +15,30 @@ DROP SCHEMA jugos;
 SELECT * FROM CITY;
 
 select * from country;
+
+# Comandos vistos en el aula anterior Parte[2] son los siguientes:
+
+CREATE TABLE TBCLIENTES(
+DNI VARCHAR(20),
+NOMBRE VARCHAR(150),
+DIRECCION1 VARCHAR(150),
+DIRECCION2 VARCHAR(150),
+BARRIO VARCHAR(50),
+CIUDAD VARCHAR(50),
+ESTADO VARCHAR(50),
+CP VARCHAR(10),
+EDAD SMALLINT,
+SEXO VARCHAR(1),
+LIMITE_CREDITO FLOAT,
+VOLUMEN_COMPRA FLOAT,
+PRIMERA_COMPRA BIT(1));
+
+DROP TABLE TBCLIENTES3;
+
+CREATE TABLE tbproductos
+(PRODUCTO VARCHAR (20) ,
+NOMBRE VARCHAR (150) ,
+ENVASE VARCHAR (50) ,
+VOLUMEN VARCHAR (50) ,
+SABOR VARCHAR (50) ,
+PRECIO FLOAT);
