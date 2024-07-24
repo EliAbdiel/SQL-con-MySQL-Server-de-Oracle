@@ -31,7 +31,7 @@
     SEXO VARCHAR(1),
     LIMITE_CREDITO FLOAT,
     VOLUMEN_COMPRA FLOAT,
-    PRIMERA_COMPRA BIT
+    PRIMERA_COMPRA BIT(1)
     
     );
   CREATE TABLE tbproductos (
@@ -55,5 +55,37 @@
   ALTER TABLE nombre_tabla MODIFY nombre_columna VARCHAR(100);
 # Eliminar una tabla.
   DROP TABLE TBCLIENTES;
+# Insertar registros en la tabla.
+  INSERT INTO tbproductos (producto, nombre, envase, volumen, sabor, precio) 
+  VALUES ('773912', 'clean', 'botella pet', '1 litro', 'naranja', 8.01);
+  INSERT INTO TABLA_DE_VENDEDORES (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
+  VALUES ('00233', 'Joan Geraldo de la Fonseca', 0.10);
+  INSERT INTO TABLA_DE_VENDEDORES (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
+  VALUES ('00235', 'Márcio Almeida Silva', 0.08);
+  INSERT INTO TABLA_DE_VENDEDORES (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
+  VALUES ('00236', 'Cláudia Morais', 0.08);
+# Actualiza el registro.
+  # UPDATE nombre_de_la_tabla 
+    SET nombre_de_la_columna = nuevo_valor 
+    WHERE condición
+  # Actualiza el registro con el producto '812829'
+  UPDATE tbproductos
+  SET producto = '812829', envase = 'lata'
+  WHERE volumen = '350 ml';
+  # Actualiza el registro con el producto '695594'
+  UPDATE tbproductos
+  SET precio = 18.51
+  WHERE producto = '695594';
+  # Actualiza el registro con el producto '1041119'
+  UPDATE tbproductos
+  SET sabor = 'Lima/Limón'
+  WHERE producto = '1041119';
+# Eliminar registros de una tabla.
+  DELETE FROM tbproductos WHERE producto = '773912';
+  DELETE FROM TABLA_DE_VENDEDORES WHERE MATRICULA = '00233';
+# Incluir la clave primaria. 
+  ALTER TABLE tbproductos
+  ADD PRIMARY KEY (producto);
 
-  
+
+
