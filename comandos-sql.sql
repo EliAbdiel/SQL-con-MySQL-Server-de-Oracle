@@ -71,8 +71,8 @@
   VALUES ('456789548', 'Pedro el Escamoso', 'Calle del Sol, 25', '', 'Los Laureles', 'CDMX', 'México', '65784', 55, 'M', 1000000, 2000, 0, '1971-05-25');
 # Actualiza el registro.
   # UPDATE nombre_de_la_tabla 
-    SET nombre_de_la_columna = nuevo_valor 
-    WHERE condición
+  # SET nombre_de_la_columna = nuevo_valor 
+  # WHERE condicion
   # Actualiza el registro con el producto '812829'
   UPDATE tbproductos
   SET producto = '812829', envase = 'lata'
@@ -93,5 +93,23 @@
   ADD PRIMARY KEY (producto);
   ALTER TABLE tbclientes
   ADD PRIMARY KEY (DNI);
-
-
+# Filtrando usando mayor que menor que y diferente.
+  SELECT * FROM tbcliente WHERE EDAD > 27;
+  SELECT * FROM tbcliente WHERE EDAD < 27;
+  SELECT * FROM tbcliente WHERE EDAD <= 27;
+  SELECT * FROM tbcliente WHERE EDAD != 26;
+  SELECT * FROM tbcliente WHERE NOMBRE > 'Erica Carbajo';
+  SELECT * FROM tbcliente WHERE NOMBRE <= 'Erica Carbajo';
+  SELECT * FROM tbproducto WHERE PRECIO_LISTA BETWEEN 28.48 AND 28.52;
+# Filtrando fechas.
+  SELECT * FROM tbcliente WHERE FECHA_NACIMIENTO = '1995-01-13';
+  SELECT * FROM tbcliente WHERE FECHA_NACIMIENTO < '1995-01-13';
+  SELECT * FROM tbcliente WHERE FECHA_NACIMIENTO > '1995-01-13';
+  SELECT * FROM tbcliente WHERE YEAR(FECHA_NACIMIENTO) = 1995;
+  SELECT * FROM tbcliente WHERE DAY(FECHA_NACIMIENTO) = 20 AND MONTH(FECHA_NACIMIENTO) = 01;
+# Filtros compuestos.
+  SELECT * FROM tbproducto WHERE ENVASE = 'Lata' OR ENVASE = 'Botella PET';
+  SELECT * FROM tbproducto WHERE precio_lista > 15 AND precio_lista < 25;
+  SELECT * FROM tbproducto WHERE (precio_lista BETWEEN 28.49 AND 28.52) OR (precio_lista > 15 AND precio_lista < 25);
+  SELECT * FROM tbproducto WHERE (precio_lista >= 15 AND TAMANO = '1 Litro') OR (ENVASE = 'Lata' OR ENVASE = 'Botella PET');
+  SELECT * FROM TABLA_DE_VENDEDORES WHERE YEAR(FECHA_ADMISION) < 2016 AND DE_VACACIONES = 1;
