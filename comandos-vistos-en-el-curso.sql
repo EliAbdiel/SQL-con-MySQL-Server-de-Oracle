@@ -1,4 +1,4 @@
-# Los comandos vistos en el aula anterior Parte[1] son los siguientes:
+# Los comandos vistos en el aula son los siguientes:
 
 USE world;
 
