@@ -53,6 +53,8 @@
   ALTER TABLE nombre_tabla MODIFY nombre_columna INT;
 # Cambiar el tamaño de una columna.
   ALTER TABLE nombre_tabla MODIFY nombre_columna VARCHAR(100);
+# Añadir una nueva columna.
+  ALTER TABLE tbclientes ADD COLUMN FECHA_NACIMIENTO DATE;
 # Eliminar una tabla.
   DROP TABLE TBCLIENTES;
 # Insertar registros en la tabla.
@@ -64,6 +66,9 @@
   VALUES ('00235', 'Márcio Almeida Silva', 0.08);
   INSERT INTO TABLA_DE_VENDEDORES (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
   VALUES ('00236', 'Cláudia Morais', 0.08);
+
+  INSERT INTO tbclientes (DNI, nombre, direccion1, direccion2, barrio, ciudad, estado, CP, edad, sexo, limite_credito, volumen_compra, primera_compra, FECHA_NACIMIENTO) 
+  VALUES ('456789548', 'Pedro el Escamoso', 'Calle del Sol, 25', '', 'Los Laureles', 'CDMX', 'México', '65784', 55, 'M', 1000000, 2000, 0, '1971-05-25');
 # Actualiza el registro.
   # UPDATE nombre_de_la_tabla 
     SET nombre_de_la_columna = nuevo_valor 
@@ -86,6 +91,7 @@
 # Incluir la clave primaria. 
   ALTER TABLE tbproductos
   ADD PRIMARY KEY (producto);
-
+  ALTER TABLE tbclientes
+  ADD PRIMARY KEY (DNI);
 
 
