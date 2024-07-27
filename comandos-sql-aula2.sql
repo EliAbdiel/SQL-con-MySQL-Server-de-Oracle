@@ -18,6 +18,8 @@ SELECT * FROM tabla_de_productos WHERE PRECIO_DE_LISTA <= 16;
 
 SELECT * FROM tabla_de_productos WHERE PRECIO_DE_LISTA BETWEEN 16 AND 16.02;
 
+/* CONSULTAS CONDICIONALES */
+
 SELECT * FROM tabla_de_productos;
 
 SELECT * FROM tabla_de_productos WHERE sabor = 'mango' AND TAMAÑO = '470 ml';
@@ -42,7 +44,7 @@ SELECT * FROM tabla_de_clientes WHERE CIUDAD IN ('ciudad de México', 'Guadalaja
 
 SELECT * FROM tabla_de_clientes WHERE CIUDAD IN ('ciudad de México', 'Guadalajara') AND (EDAD BETWEEN 20 AND 25);
 
-# Usando LIKE, el símbolo % representa cualquier cantidad de caracteres.
+/*CONSULTAS LIKE, el símbolo % representa cualquier cantidad de caracteres*/
 
 SELECT * FROM tabla_de_productos WHERE SABOR LIKE '%manzana%';
 
@@ -50,3 +52,126 @@ SELECT * FROM tabla_de_productos WHERE SABOR LIKE '%manzana%' AND ENVASE = 'Bote
 
 SELECT * FROM tabla_de_clientes WHERE NOMBRE LIKE '%ez';
 
+/*REGISTROS UNICOS*/
+
+SELECT DISTINCT ENVASE, TAMAÑO FROM tabla_de_productos;
+
+SELECT DISTINCT ENVASE, TAMAÑO, SABOR FROM tabla_de_productos WHERE SABOR = 'Naranja';
+
+SELECT DISTINCT BARRIO FROM tabla_de_clientes WHERE CIUDAD = 'Ciudad de México';
+
+/*LIMIT nos permite limitar el número de registros*/
+
+SELECT * FROM tabla_de_productos LIMIT 5;
+
+SELECT * FROM tabla_de_productos LIMIT 5,4; /*muestra 4 registros comenzando desde el registro número 5*/
+
+SELECT * FROM facturas  WHERE FECHA_VENTA = '2017-01-01' LIMIT 10;
+
+/*ORDER BY, ordena los resultados de nuestras consultas SQL*/
+
+SELECT * FROM tabla_de_productos ORDER BY PRECIO_DE_LISTA;
+
+SELECT * FROM tabla_de_productos ORDER BY PRECIO_DE_LISTA DESC;
+
+SELECT * FROM tabla_de_productos ORDER BY NOMBRE_DEL_PRODUCTO;
+
+SELECT * FROM tabla_de_productos ORDER BY NOMBRE_DEL_PRODUCTO DESC;
+
+SELECT * FROM tabla_de_productos ORDER BY ENVASE ASC, NOMBRE_DEL_PRODUCTO DESC;
+
+SELECT * FROM tabla_de_productos ORDER BY ENVASE DESC, NOMBRE_DEL_PRODUCTO ASC;
+
+/*GROUP BY en SQL, permite agrupar filas de una tabla según un criterio específico*/
+
+SELECT ESTADO, SUM(LIMITE_DE_CREDITO) AS LIMITE_TOTAL
+FROM tabla_de_clientes
+GROUP BY ESTADO;
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS MAYOR_PRECIO
+FROM tabla_de_productos
+GROUP BY ENVASE;
+
+SELECT ENVASE, COUNT(*)
+FROM tabla_de_productos
+GROUP BY ENVASE;
+
+SELECT BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE
+FROM tabla_de_clientes
+GROUP BY BARRIO;
+
+SELECT BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE
+FROM tabla_de_clientes
+WHERE CIUDAD = 'CIUDAD DE MÉXICO'
+GROUP BY BARRIO;
+
+SELECT CIUDAD, BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE
+FROM tabla_de_clientes
+WHERE CIUDAD = 'CIUDAD DE MÉXICO'
+GROUP BY BARRIO, CIUDAD;
+
+SELECT ESTADO, BARRIO, SUM(LIMITE_DE_CREDITO) AS LIMITE
+FROM tabla_de_clientes
+WHERE CIUDAD = 'CIUDAD DE MÉXICO'
+GROUP BY ESTADO, BARRIO;
+
+SELECT ESTADO, BARRIO, MAX(LIMITE_DE_CREDITO) AS LIMITE, EDAD
+FROM tabla_de_clientes
+WHERE EDAD >= 20
+GROUP BY ESTADO, BARRIO
+ORDER BY EDAD;
+
+/*HAVING en SQL, es un filtro que se aplica a los resultados de una agregación*/
+
+SELECT ESTADO, SUM(LIMITE_TOTAL) AS SUMA_LIMITE_TOTAL
+FROM tabla_de_clientes
+GROUP BY ESTADO
+HAVING SUM(LIMITE_TOTAL) > 300000;
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO, SUM(PRECIO_DE_LISTA) AS SUMA_PRECIO
+FROM tabla_de_productos
+GROUP BY ENVASE
+HAVING SUM(PRECIO_DE_LISTA) > 80;
+
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO, MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO, SUM(PRECIO_DE_LISTA) AS SUMA_PRECIO
+FROM tabla_de_productos
+GROUP BY ENVASE
+HAVING SUM(PRECIO_DE_LISTA) > 80 AND MAX(PRECIO_DE_LISTA) >= 5;
+
+SELECT DNI, COUNT(*) FROM facturas
+WHERE YEAR(FECHA_VENTA) = 2016
+GROUP BY DNI
+HAVING COUNT(*) > 2000;
+
+/*CASE, permite evaluar condiciones y devolver un valor según el resultado.*/
+
+SELECT NOMBRE_DEL_PRODUCTO, 
+       PRECIO_DE_LISTA,
+       CASE 
+           WHEN PRECIO_DE_LISTA >= 12 THEN 'Costoso'
+           WHEN PRECIO_DE_LISTA >= 5 AND PRECIO_DE_LISTA < 12 THEN 'Asequible'
+           ELSE 'Barato'
+       END AS PRECIO
+FROM tabla_de_productos;
+
+SELECT ENVASE, 
+       SABOR,
+       CASE 
+           WHEN PRECIO_DE_LISTA >= 12 THEN 'Costoso'
+           WHEN PRECIO_DE_LISTA >= 5 AND PRECIO_DE_LISTA < 12 THEN 'Asequible'
+           ELSE 'Barato'
+       END AS PRECIO,
+       MIN(PRECIO_DE_LISTA) AS PRECIO_MINIMO
+FROM tabla_de_productos
+WHERE TAMAÑO = '700 ml'
+GROUP BY ENVASE, SABOR, PRECIO
+ORDER BY ENVASE;
+
+SELECT NOMBRE,
+CASE 
+    WHEN YEAR(fecha_de_nacimiento) < 1990 THEN 'Viejos'
+    WHEN YEAR(fecha_de_nacimiento) >= 1990 
+    AND YEAR(fecha_de_nacimiento) <= 1995 THEN 'Jóvenes' 
+    ELSE 'Niños' 
+END AS CLASIFICACION_EDAD
+FROM tabla_de_clientes;
