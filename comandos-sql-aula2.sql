@@ -240,3 +240,98 @@ FROM tabla_de_clientes A
 RIGHT JOIN facturas B ON A.DNI = B.DNI
 WHERE A.DNI IS NULL;
 
+/*muestra clientes, barrios y vendedores que atienden en el mismo barrio*/
+SELECT 
+    tabla_de_clientes.NOMBRE,
+    tabla_de_clientes.BARRIO,
+    tabla_de_vendedores.NOMBRE,
+    tabla_de_vendedores.BARRIO
+FROM 
+    tabla_de_clientes
+INNER JOIN 
+    tabla_de_vendedores ON tabla_de_clientes.BARRIO = tabla_de_vendedores.BARRIO;
+
+/*alias para mostrar clientes, barrios y vendedores que atienden en el mismo barrio*/
+SELECT 
+    c.NOMBRE,
+    c.BARRIO,
+    v.NOMBRE,
+    v.BARRIO
+FROM 
+    tabla_de_clientes c
+INNER JOIN 
+    tabla_de_vendedores v ON c.BARRIO = v.BARRIO;
+
+/*mostrar clientes, barrios, vendedores que atienden en el mismo barrio 
+  y la ciudad del cliente*/
+SELECT 
+    c.NOMBRE,
+    c.BARRIO,
+    c.CIUDAD,
+    v.NOMBRE,
+    v.BARRIO
+FROM 
+    tabla_de_clientes c
+INNER JOIN 
+    tabla_de_vendedores v ON c.BARRIO = v.BARRIO;
+
+/*mostrar todos los clientes, sus barrios, ciudades 
+  y los vendedores que los atienden (si los hay)*/
+SELECT 
+    c.NOMBRE,
+    c.BARRIO,
+    c.CIUDAD,
+    v.NOMBRE
+FROM 
+    tabla_de_clientes c
+LEFT JOIN 
+    tabla_de_vendedores v ON c.BARRIO = v.BARRIO;
+
+/*mostrar todos los vendedores, sus barrios y los clientes 
+  que atienden (si los hay)*/
+SELECT 
+    c.NOMBRE,
+    v.NOMBRE,
+    v.BARRIO
+FROM 
+    tabla_de_clientes c
+RIGHT JOIN 
+    tabla_de_vendedores v ON c.BARRIO = v.BARRIO;
+
+/* mostrar clientes, barrios, ciudades, vendedores y sus vacaciones, 
+   solo si el barrio del cliente es igual al barrio del vendedor*/
+SELECT 
+    c.NOMBRE,
+    c.BARRIO,
+    c.CIUDAD,
+    v.NOMBRE,
+    v.VACACIONES
+FROM 
+    tabla_de_clientes c, tabla_de_vendedores v;
+
+/*UNION: Combina resultados de consultas, eliminando duplicados*/
+
+SELECT DISTINCT BARRIO FROM tabla_de_clientes;
+UNION
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+
+/*une información de clientes y vendedores, 
+incluyendo el nombre, barrio y tipo (cliente o vendedor)*/
+SELECT BARRIO, NOMBRE, 'Cliente' AS TIPO FROM tabla_de_clientes
+UNION
+SELECT BARRIO, NOMBRE, 'Vendedor' AS TIPO FROM tabla_de_vendedores;
+
+/*realia un FULL JOIN utilizando LEFT JOIN y RIGHT JOIN con UNION*/
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.CIUDAD, tabla_de_clientes.BARRIO, tabla_de_vendedores.NOMBRE AS VENDEDOR
+FROM tabla_de_clientes
+LEFT JOIN tabla_de_vendedores ON tabla_de_clientes.ID = tabla_de_vendedores.ID_CLIENTE
+UNION
+SELECT tabla_de_clientes.NOMBRE, tabla_de_clientes.CIUDAD, tabla_de_clientes.BARRIO, tabla_de_vendedores.NOMBRE AS VENDEDOR
+FROM tabla_de_clientes
+RIGHT JOIN tabla_de_vendedores ON tabla_de_clientes.ID = tabla_de_vendedores.ID_CLIENTE;
+
+/*UNION ALL: Combina resultados de consultas, incluyendo todos los registros, incluso los duplicados*/
+
+SELECT DISTINCT BARRIO FROM tabla_de_clientes;
+UNION ALL
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
