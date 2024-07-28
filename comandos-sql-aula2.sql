@@ -175,3 +175,68 @@ CASE
     ELSE 'Niños' 
 END AS CLASIFICACION_EDAD
 FROM tabla_de_clientes;
+
+/*Los JOINs, una herramienta para combinar datos de diferentes tablas*/
+
+/*INNER JOIN: Devuelve solo los registros que tienen coincidencias en ambas tablas. 
+  Es el más utilizado.*/
+SELECT A.NOMBRE, B.HOBBY
+FROM tabla_de_izquierda A
+INNER JOIN tabla_de_derecha B
+ON A.ID = B.ID;
+
+/*LEFT JOIN: Devuelve todos los registros de la tabla izquierda 
+y solo los registros coincidentes de la tabla derecha.*/
+SELECT A.NOMBRE, B.HOBBY
+FROM tabla_de_izquierda A
+LEFT JOIN tabla_de_derecha B
+ON A.ID = B.ID;
+
+/*RIGHT JOIN: Devuelve todos los registros de la tabla derecha 
+  y solo los registros coincidentes de la tabla izquierda.*/
+SELECT A.NOMBRE, B.HOBBY
+FROM tabla_de_izquierda A
+RIGHT JOIN tabla_de_derecha B
+ON A.ID = B.ID;
+
+/*FULL JOIN: Devuelve todos los registros de ambas tablas
+  , incluyendo los que no tienen coincidencias.*/
+SELECT A.NOMBRE, B.HOBBY
+FROM tabla_de_izquierda A
+FULL JOIN tabla_de_derecha B
+ON A.ID = B.ID;
+
+/*CROSS JOIN: Devuelve el producto cartesiano de ambas tablas, es decir
+  , todas las posibles combinaciones de registros.*/
+SELECT A.NOMBRE, B.HOBBY
+FROM tabla_de_izquierda A
+CROSS JOIN tabla_de_derecha B;
+
+SELECT YEAR(FECHA_VENTA), SUM(CANTIDAD * PRECIO) AS FACTURACION
+FROM facturas F 
+INNER JOIN 
+items_facturas IFa 
+ON F.NUMERO = IFa.NUMERO
+GROUP BY YEAR(FECHA_VENTA);
+
+/*muestra clientes que han comprado*/
+SELECT A.DNI, A.NOMBRE, B.DNI
+FROM tabla_de_clientes A
+INNER JOIN facturas B ON A.DNI = B.DNI;
+
+/*muestra clientes que no han comprado*/
+SELECT A.DNI, A.NOMBRE, A.CIUDAD, B.DNI
+FROM tabla_de_clientes A
+LEFT JOIN facturas B ON A.DNI = B.DNI;
+
+/*muestra clientes que no han comprado con WHERE*/
+SELECT A.DNI, A.NOMBRE, A.CIUDAD, B.DNI
+FROM tabla_de_clientes A
+LEFT JOIN facturas B ON A.DNI = B.DNI
+WHERE B.DNI IS NULL;
+
+SELECT B.DNI, B.NOMBRE, B.CIUDAD, A.DNI
+FROM tabla_de_clientes A
+RIGHT JOIN facturas B ON A.DNI = B.DNI
+WHERE A.DNI IS NULL;
+
