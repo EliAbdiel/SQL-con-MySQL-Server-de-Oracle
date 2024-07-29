@@ -335,3 +335,30 @@ RIGHT JOIN tabla_de_vendedores ON tabla_de_clientes.ID = tabla_de_vendedores.ID_
 SELECT DISTINCT BARRIO FROM tabla_de_clientes;
 UNION ALL
 SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+
+/*SUBCONSULTAS: consultas que se ejecutan dentro de otra consulta*/
+
+SELECT DISTINCT BARRIO FROM tabla_de_vendedores;
+SELECT * FROM tabla_de_clientes WHERE BARRIO IN ('Condesa', 'Del Valle', 'Contadero', 'Oblatos');
+/*Imagina que la tabla tabla_de_vendedores tiene los siguientes barrios:
+
+Condesa
+Del Valle
+Contadero
+Y la tabla tabla_de_clientes tiene los siguientes barrios:
+
+Condesa
+Del Valle
+Roma
+Polanco
+El script SQL seleccionará solo los clientes que viven en Condesa o Del Valle, 
+ya que estos son los barrios que también están en la tabla tabla_de_vendedores.*/
+SELECT * FROM tabla_de_clientes WHERE BARRIO IN (
+       SELECT DISTINCT BARRIO FROM tabla_de_vendedores
+       );
+/*el script completo selecciona el tipo de envase y el precio máximo de cada envase, 
+pero solo muestra aquellos envases cuyo precio máximo es mayor o igual a 10.*/
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) as PRECIO_MAXIMO FROM tabla_de_productos GROUP BY ENVASE;
+SELECT X.ENVASE, X.PRECIO_MAXIMO FROM (
+       SELECT ENVASE, MAX(PRECIO_DE_LISTA) as PRECIO_MAXIMO FROM tabla_de_productos GROUP BY ENVASE) X 
+       WHERE X.PRECIO_MAXIMO >= 10;
