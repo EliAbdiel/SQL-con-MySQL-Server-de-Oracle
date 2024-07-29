@@ -362,3 +362,37 @@ SELECT ENVASE, MAX(PRECIO_DE_LISTA) as PRECIO_MAXIMO FROM tabla_de_productos GRO
 SELECT X.ENVASE, X.PRECIO_MAXIMO FROM (
        SELECT ENVASE, MAX(PRECIO_DE_LISTA) as PRECIO_MAXIMO FROM tabla_de_productos GROUP BY ENVASE) X 
        WHERE X.PRECIO_MAXIMO >= 10;
+/*ejemplo: la subconsulta que sería equivalente a*/
+SELECT DNI, COUNT(*) FROM facturas
+WHERE YEAR(FECHA_VENTA) = 2016
+GROUP BY DNI
+HAVING COUNT(*) > 2000;
+/****/
+SELECT X.DNI, X.CONTADOR FROM 
+(SELECT DNI, COUNT(*) AS CONTADOR FROM facturas
+WHERE YEAR(FECHA_VENTA) = 2016
+GROUP BY DNI) X WHERE X.CONTADOR > 2000;
+
+/* VIEWS*/
+
+/*Consulta para crear la View 'vw_envases_grandes'*/
+CREATE VIEW vw_envases_grandes AS
+SELECT ENVASE, MAX(PRECIO_DE_LISTA) AS PRECIO_MAXIMO
+FROM tabla_de_productos
+GROUP BY ENVASE;
+/*Consulta para obtener los envases con precio máximo mayor a 10*/
+SELECT X.ENVASE, X.PRECIO_MAXIMO
+FROM vw_envases_grandes X
+WHERE PRECIO_MAXIMO >= 10;
+/*Consulta para obtener el precio de lista, precio máximo y porcentaje de variación*/
+SELECT 
+    A.NOMBRE_DEL_PRODUCTO, 
+    A.ENVASE, 
+    A.PRECIO_DE_LISTA, 
+    B.PRECIO_MAXIMO,
+    ( (B.PRECIO_MAXIMO  A.PRECIO_DE_LISTA) / B.PRECIO_MAXIMO ) * 100 AS PORCENTAJE_DE_VARIACION
+FROM 
+    tabla_de_productos A
+INNER JOIN 
+    vw_envases_grandes B ON A.ENVASE = B.ENVASE;
+
